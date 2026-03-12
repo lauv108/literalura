@@ -1,129 +1,196 @@
-LiterAlura
+# LiterAlura
 
-LiterAlura es una aplicación de consola desarrollada en Java con Spring Boot que consume la API pública Gutendex para buscar información de libros del proyecto Gutenberg y almacenar los resultados en una base de datos PostgreSQL utilizando Spring Data JPA.
+## Descripción
 
-El proyecto forma parte del challenge de backend de Alura y tiene como objetivo practicar el consumo de APIs externas, el manejo de JSON, la persistencia de datos con JPA y la construcción de aplicaciones backend estructuradas.
+LiterAlura es una aplicación de consola desarrollada en Java utilizando Spring Boot.  
+La aplicación consume la API pública de Gutendex para buscar información de libros disponibles en el catálogo de Project Gutenberg y almacenar los resultados en una base de datos PostgreSQL.
 
-Tecnologías utilizadas
+El sistema permite buscar libros por título, guardar su información en la base de datos y realizar diferentes consultas sobre libros y autores registrados.
 
-Java 17
-Spring Boot
-Spring Data JPA
-PostgreSQL
-Jackson
-Maven
-IntelliJ IDEA
-API Gutendex
+Este proyecto fue desarrollado como parte del desafío **LiterAlura Challenge Java**.
 
-Descripción de los paquetes:
+---
 
-api
-Contiene las clases responsables de consumir la API externa y convertir los datos JSON a objetos Java.
+## Tecnologías utilizadas
 
-dto
-Define los Data Transfer Objects utilizados para mapear la respuesta JSON de la API Gutendex.
+- Java 17
+- Spring Boot
+- Spring Data JPA
+- PostgreSQL
+- Jackson
+- Maven
+- API Gutendex
 
-model
-Contiene las entidades JPA que representan las tablas de la base de datos.
+---
 
-repository
-Define las interfaces que extienden JpaRepository para interactuar con la base de datos.
+## Arquitectura del proyecto
 
-principal
-Contiene la lógica principal de interacción con el usuario a través de un menú en consola.
+El proyecto sigue una estructura modular basada en buenas prácticas de desarrollo backend con Spring Boot.
 
-Funcionalidades
+```
+src
+ └─ main
+     └─ java
+         └─ com.alura.literalura
+             ├─ api
+             │   ├─ ConsumoAPI.java
+             │   ├─ ConvierteDatos.java
+             │   └─ IConvierteDatos.java
+             │
+             ├─ dto
+             │   ├─ DatosAutor.java
+             │   ├─ DatosGutendex.java
+             │   └─ DatosLibro.java
+             │
+             ├─ model
+             │   ├─ Autor.java
+             │   └─ Libro.java
+             │
+             ├─ repository
+             │   ├─ AutorRepository.java
+             │   └─ LibroRepository.java
+             │
+             └─ principal
+                 └─ Principal.java
+```
 
-La aplicación permite realizar las siguientes operaciones:
+### Descripción de los paquetes
 
-Buscar libro por título utilizando la API Gutendex.
+**api**  
+Contiene las clases responsables de consumir la API externa y convertir los datos JSON.
 
-Guardar libros y autores en la base de datos PostgreSQL.
+**dto**  
+Clases utilizadas para mapear la respuesta JSON recibida desde la API Gutendex.
 
-Listar todos los libros registrados.
+**model**  
+Entidades JPA que representan las tablas en la base de datos.
 
-Listar autores registrados.
+**repository**  
+Interfaces que extienden `JpaRepository` y permiten realizar operaciones de persistencia.
 
-Listar autores vivos en un año determinado.
+**principal**  
+Contiene la lógica de interacción con el usuario a través de la consola.
 
-Listar libros por idioma.
+---
 
-Evitar duplicados al guardar libros.
+## Funcionalidades
 
-API utilizada
+La aplicación ofrece las siguientes funcionalidades:
 
-La aplicación consume la API pública Gutendex.
+- Buscar libro por título (consumiendo la API Gutendex)
+- Guardar libros en la base de datos
+- Listar libros registrados
+- Listar autores registrados
+- Listar autores vivos en un año determinado
+- Listar libros por idioma
 
-Documentación oficial:
+---
+
+## API utilizada
+
+La aplicación consume la API pública de Gutendex.
+
+Documentación de la API:
+
 https://gutendex.com/
 
-Ejemplo de búsqueda:
+Ejemplo de consulta:
 
+```
 https://gutendex.com/books/?search=pride+and+prejudice
+```
 
-La API devuelve los datos en formato JSON y estos se transforman a objetos Java utilizando la biblioteca Jackson.
+La respuesta se recibe en formato JSON y se convierte a objetos Java utilizando la biblioteca **Jackson**.
 
-Base de datos
+---
 
-Se utiliza PostgreSQL para la persistencia de datos.
+## Configuración del proyecto
 
-Configuración típica en application.properties:
+Requisitos necesarios para ejecutar el proyecto:
 
+- Java JDK 17 o superior
+- Maven
+- PostgreSQL
+- IntelliJ IDEA (recomendado)
+
+---
+
+## Configuración de la base de datos
+
+En el archivo `application.properties` debes configurar la conexión a PostgreSQL.
+
+Ejemplo:
+
+```
 spring.datasource.url=jdbc:postgresql://localhost:5432/literalura
 spring.datasource.username=postgres
 spring.datasource.password=tu_password
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-Cómo ejecutar el proyecto
+spring.jpa.format-sql=true
+```
 
-Clonar el repositorio
+Asegúrate de que la base de datos exista antes de ejecutar la aplicación.
 
+---
+
+## Cómo ejecutar el proyecto
+
+1. Clonar el repositorio
+
+```
 git clone https://github.com/lauv108/literalura.git
+```
 
-Entrar al proyecto
+2. Entrar al directorio del proyecto
 
+```
 cd literalura
+```
 
-Configurar PostgreSQL y crear la base de datos
+3. Compilar el proyecto con Maven
 
-CREATE DATABASE literalura;
+```
+mvn clean install
+```
 
-Configurar credenciales en application.properties.
+4. Ejecutar la aplicación
 
-Ejecutar la aplicación desde IntelliJ o con Maven.
+Desde IntelliJ IDEA ejecuta la clase:
 
-Menú de la aplicación
+```
+LiteraluraApplication
+```
 
-Al ejecutar la aplicación se muestra un menú interactivo en consola que permite al usuario:
+---
 
-Buscar libros por título.
+## Ejemplo de uso
 
-Listar libros registrados.
+Al iniciar la aplicación se mostrará un menú en consola que permite al usuario interactuar con el sistema.
 
-Consultar autores registrados.
+Ejemplo de búsqueda de libro:
 
-Buscar autores vivos en un año determinado.
+```
+Escribe el nombre del libro que deseas buscar:
+Pride and Prejudice
+```
 
-Consultar libros por idioma.
+Resultado:
 
-Aprendizajes del proyecto
+```
+Libro encontrado
 
-Consumo de APIs REST en Java.
+Título: Pride and Prejudice
+Autor: Jane Austen
+Idioma: en
+Número de descargas: 92780
+```
 
-Uso de HttpClient para realizar solicitudes HTTP.
+---
 
-Deserialización de JSON con Jackson.
+## Autor
 
-Uso de Streams y Lambdas.
+Proyecto desarrollado por:
 
-Persistencia de datos con Spring Data JPA.
-
-Modelado de entidades con ORM.
-
-Consultas derivadas en Spring Data JPA.
-
-Manejo de excepciones.
-
-Diseño de aplicaciones backend en capas.
+Laura Velásquez
